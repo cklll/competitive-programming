@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <set>
+#include <algorithm>
 
 class Point
 {
@@ -12,86 +13,20 @@ public:
         to_sort = std::to_string(x) + " " + std::to_string(y);
     }
 
-    void rotate()
-    {
-        int tmpX = x;
-        x = y;
-        y = -tmpX;
-        to_sort = std::to_string(x) + " " + std::to_string(y); // not necessary in our use case since we don't need to iterate in order
-    }
-
     bool operator<(const Point &rhs) const
     {
         return to_sort < rhs.to_sort;
     }
 
-private:
     int x, y;
+
+private:
     std::string to_sort;
 };
 
-// std::set<std::string> translateTo00(std::set<std::string> &originalSet)
-// {
-//     std::set<std::string> newSet;
-
-//     int mostLeft = 2000, mostBottom = 2000;
-
-//     for (std::set<std::string>::iterator iter = originalSet.begin(); iter != originalSet.end(); iter++)
-//     {
-//         int x, y;
-//         std::string line = *iter;
-//         std::istringstream iss(line);
-
-//         iss >> x >> y;
-
-//         if (x < mostLeft)
-//         {
-//             mostLeft = x;
-//         }
-//         if (y < mostBottom)
-//         {
-//             mostBottom = y;
-//         }
-//     }
-
-//     int translateX = -mostLeft;
-//     int translateY = -mostBottom;
-
-//     for (std::set<std::string>::iterator iter = originalSet.begin(); iter != originalSet.end(); iter++)
-//     {
-//         int x, y;
-//         std::string line = *iter;
-//         std::istringstream iss(line);
-
-//         iss >> x >> y;
-
-//         int newX = x + translateX;
-//         int newY = y + translateY;
-
-//         std::string newKey = std::to_string(newX) + " " + std::to_string(newY);
-//         newSet.insert(newKey);
-//     }
-
-//     return newSet;
-// }
-
-// bool check(std::set<std::string> setM, std::set<std::string> setF)
-// {
-//     for (std::set<std::string>::iterator iter = setM.begin(); iter != setM.end(); iter++)
-//     {
-//         std::string keyToFind = *iter;
-//         if (setF.find(keyToFind) == setF.end())
-//         {
-//             return false;
-//         }
-//     }
-
-//     return true;
-// }
-
 int main()
 {
-    int t, n, x, y;
+    int t, n;
     std::cin >> t;
 
     for (int i = 0; i < t; i++)
@@ -100,20 +35,73 @@ int main()
         std::set<Point> setM;
         std::set<Point> setF;
 
+        int mostLeftM, mostBottomM;
+        int mostLeftF = 100000, mostBottomF = 100000;
+
         for (int j = 0; j < n; j++)
         {
+            int x, y;
             std::cin >> x >> y;
             Point point(x, y);
             setM.insert(point);
         }
+
         for (int j = 0; j < n; j++)
         {
+            int x, y;
             std::cin >> x >> y;
             Point point(x, y);
             setF.insert(point);
+            mostLeftF = std::min(mostLeftF, x);
+            mostBottomF = std::min(mostBottomF, y);
         }
 
-        std::cout << "NOT MATCHED" << std::endl;
+        // translate setF
+        std::set<Point> tmpSetF;
+        for (std::set<Point>::iterator iter = setF.begin(); iter != setF.end(); iter++)
+        {
+            Point rotatedPoint(iter->x - mostLeftF, iter->y - mostBottomF);
+            tmpSetF.insert(rotatedPoint);
+        }
+        setF = tmpSetF;
+
+        for (int i = 0; i < 4; i++)
+        {
+            mostLeftM = 100000, mostBottomM = 100000;
+
+            // rotate first
+            std::set<Point> tmpSetM;
+            for (std::set<Point>::iterator iter = setM.begin(); iter != setM.end(); iter++)
+            {
+                Point rotatedPoint(iter->y, -(iter->x));
+                tmpSetM.insert(rotatedPoint);
+
+                mostLeftM = std::min(mostLeftM, rotatedPoint.x);
+                mostBottomM = std::min(mostBottomM, rotatedPoint.y);
+            }
+            setM = tmpSetM;
+
+            bool found = true;
+            for (std::set<Point>::iterator iter = setM.begin(); iter != setM.end(); iter++)
+            {
+                Point pointToFind(iter->x - mostLeftM, iter->y - mostBottomM);
+
+                if (setF.find(pointToFind) == setF.end())
+                {
+                    found = false;
+                }
+            }
+
+            if (found)
+            {
+                std::cout << "MATCHED" << std::endl;
+                break;
+            }
+            else if (i == 3)
+            {
+                std::cout << "NOT MATCHED" << std::endl;
+            }
+        }
     }
 
     return 0;
