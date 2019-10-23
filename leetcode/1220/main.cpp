@@ -17,7 +17,6 @@ int main() {
         unsigned long modNumber = 1000000007;
 
         for (int i = 3; i <= n; i++) {
-            map<char, unsigned long> nextPair;
             unsigned long nextIncrements[5];
             nextIncrements[0] = (increments[1] + increments[2] + increments[4])  % modNumber;
             nextIncrements[1] = (increments[0] + increments[2])  % modNumber;
