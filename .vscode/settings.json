@@ -1,5 +1,16 @@
 {
   "files.associations": {
-    "set": "cpp"
+    "set": "cpp",
+    "__locale": "cpp",
+    "vector": "cpp",
+    "ostream": "cpp",
+    "deque": "cpp",
+    "functional": "cpp",
+    "map": "cpp",
+    "string": "cpp",
+    "unordered_map": "cpp",
+    "iosfwd": "cpp",
+    "iostream": "cpp",
+    "utility": "cpp"
   }
 }
