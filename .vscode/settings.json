@@ -11,6 +11,8 @@
     "unordered_map": "cpp",
     "iosfwd": "cpp",
     "iostream": "cpp",
-    "utility": "cpp"
+    "utility": "cpp",
+    "__string": "cpp",
+    "string_view": "cpp"
   }
 }
