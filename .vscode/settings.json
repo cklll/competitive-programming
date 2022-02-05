@@ -13,6 +13,11 @@
     "iostream": "cpp",
     "utility": "cpp",
     "__string": "cpp",
-    "string_view": "cpp"
+    "string_view": "cpp",
+    "algorithm": "cpp",
+    "numeric": "cpp",
+    "list": "cpp",
+    "__node_handle": "cpp",
+    "iterator": "cpp"
   }
 }
