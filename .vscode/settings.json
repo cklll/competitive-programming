@@ -18,6 +18,10 @@
     "numeric": "cpp",
     "list": "cpp",
     "__node_handle": "cpp",
-    "iterator": "cpp"
+    "iterator": "cpp",
+    "tuple": "cpp",
+    "locale": "cpp",
+    "unordered_set": "cpp",
+    "queue": "cpp"
   }
 }
